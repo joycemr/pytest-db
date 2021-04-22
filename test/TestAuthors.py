@@ -7,6 +7,7 @@ class TestAuthors:
     # using the custom sql_runner
     def test_Vonnegut(self, setup_authors):
         result = sql_runner.select_all('author', "l_name = 'Vonnegut'")
+        print(result)
         assert 'Kurt' == result[0][1]
         assert 'Vonnegut' == result[0][2]
         assert 'KVonnegut@gmail.com' == result[0][3]

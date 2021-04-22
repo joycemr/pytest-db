@@ -16,19 +16,27 @@ def cur(conn):
     cur.close()
 
 # Test data setup fixtures
+# @fixture(scope='session')
+# def authors():
+#     authors = (
+#         ('Kurt', 'Vonnegut', 'KVonnegut@gmail.com'),
+#         ('Mark', 'Twain', 'MTwain@gmail.com')
+#     )
+#     return authors
+
 @fixture(scope='session')
 def authors():
-    authors = (
-        ('Kurt', 'Vonnegut', 'KVonnegut@gmail.com'),
-        ('Mark', 'Twain', 'MTwain@gmail.com')
-    )
+    authors = [
+        {'id': None, 'f_name': 'Kurt', 'l_name': 'Vonnegut', 'email': 'KVonnegut@gmail.com'},
+        {'id': None, 'f_name': 'Mark', 'l_name': 'Twain', 'email': 'MTwain@gmail.com'}
+    ]
     return authors
 
 @fixture(scope="function")
 def setup_authors(cur, authors):
     for author in authors:
         cur.execute("select nextval('author_seq')")
-        author_key = cur.fetchone()
-        cur.execute('insert into author values(%s, %s, %s, %s)', author_key + author)
+        author['id'] = cur.fetchone()
+        cur.execute('insert into author values(%(id)s, %(f_name)s, %(l_name)s, %(email)s)', list(author))
     yield
 
