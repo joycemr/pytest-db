@@ -6,6 +6,7 @@ import sql_runner
 class TestAuthors:
 
     # using the custom sql_runner
+    @mark.Vonnegut
     def test_Vonnegut(self, setup_authors):
         result = sql_runner.select_all('author', "l_name = 'Vonnegut'")
         print(result)
@@ -14,6 +15,7 @@ class TestAuthors:
         assert 'KVonnegut@gmail.com' == result[0].email
 
     # using the psycopg2 connection directly
+    @mark.Twain
     def test_Twain(self, setup_authors):
         sql = "select * from author where l_name = 'Twain';"
         cur.execute(sql)
