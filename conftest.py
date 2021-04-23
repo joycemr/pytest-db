@@ -1,20 +1,10 @@
 import os
-import psycopg2
+import db
+import json
+from db import cur
 from pytest import fixture
 
-@fixture(scope="session", autouse=True)
-def conn():
-    DATABASE_URL = os.getenv("SQL_UNIT_TEST_DB_URL")
-    conn = psycopg2.connect(DATABASE_URL)
-    yield conn
-    conn.close()
-
-@fixture(scope="session", autouse=True)
-def cur(conn):
-    cur = conn.cursor()
-    yield cur
-    cur.close()
-
+# Test data setup fixtures
 @fixture(scope='session')
 def authors():
     authors = (
@@ -24,7 +14,7 @@ def authors():
     return authors
 
 @fixture(scope="function")
-def setup_authors_dispose(cur, authors):
+def setup_authors(authors):
     for author in authors:
         cur.execute("select nextval('author_seq')")
         author_key = cur.fetchone()
