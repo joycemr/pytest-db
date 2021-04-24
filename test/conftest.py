@@ -1,6 +1,3 @@
-import os
-import db
-import json
 from db import cur
 from pytest import fixture
 

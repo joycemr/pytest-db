@@ -1,5 +1,4 @@
 from convert_var import convert_var
-from pytest import fixture
 from db import cur
 
 def func(function_name, *args):
