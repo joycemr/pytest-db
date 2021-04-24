@@ -20,7 +20,7 @@ RUN set -eux \
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PYTEST_ADDOPTS="--color=yes"
-ENV DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/postgres
+ENV SQL_UNIT_TEST_TEMPLATE_DB_URL=postgresql://postgres:postgres@host.docker.internal:5432/postgres
 
 WORKDIR /test
 
