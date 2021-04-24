@@ -1,0 +1,5 @@
+# Ignore everything in this directory
+# it is just for rolled up build artifacts
+*
+# Except this file
+!.gitignore
