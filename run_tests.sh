@@ -2,6 +2,7 @@
 
 # db container vars
 DB_IMAGE="postgres_sql_test_db"
+DB_CONTAINER="ephemeral-test-db"
 DB_IMAGE_DOCKERFILE="containers/db/Dockerfile"
 
 # pytest image vars
@@ -28,6 +29,10 @@ rebuild_test () {
     docker build -t $TEST_IMAGE -f $TEST_IMAGE_DOCKERFILE .
 }
 
+wait_on_db () {
+    until docker exec $DB_CONTAINER pg_isready ; do sleep 3 ; done
+}
+
 if [ "$1" == "rebuild" ]
     then # rebuild the images
     shift # throw away 1st parameter any others will be passed to pytest
@@ -50,15 +55,12 @@ else
     fi
 fi
 
-
 # start the db container
 echo "Starting database"
-docker run -d --rm --name ephemeral-test-db --publish 5432:5432 $DB_IMAGE
+docker run -d --rm --name $DB_CONTAINER --publish 5432:5432 $DB_IMAGE
 
-
-#TODO do this better
-sleep 10
-
+# wait until the DB_CONTAINER is accepting connections
+wait_on_db
 
 # check for any parameters to the pytest command
 if [ $# -eq 0 ]
