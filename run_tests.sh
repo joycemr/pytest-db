@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# db script vars
+DB_BUILD_DIR="db/build"
+DB_TABLE_DIR="db/tables"
+DB_FUNCTION_DIR="db/functions"
+
 # db container vars
 DB_IMAGE="postgres_sql_test_db"
 DB_CONTAINER="ephemeral-test-db"
@@ -11,6 +16,11 @@ TEST_IMAGE_DOCKERFILE="containers/pytest/Dockerfile"
 TEST_MOUNT="type=bind,source="$(pwd)"/test,target=/test"
 
 # functions
+build_database_sql () {
+    cat $DB_TABLE_DIR/*.sql > $DB_BUILD_DIR/complete.sql
+    cat $DB_FUNCTION_DIR/*.sql >> $DB_BUILD_DIR/complete.sql
+}
+
 rebuild_db_container () {
     OUTPUT=$(docker image ls -q $DB_IMAGE)
     if [ $OUTPUT ]
@@ -33,6 +43,9 @@ wait_on_db_connection () {
     # TODO need a timeout here, but the standard one does not work on a mac
     until docker exec $DB_CONTAINER pg_isready ; do sleep 3 ; done
 }
+
+# rebuild the database SQL DDL file
+build_database_sql
 
 # check if the first parameter = "rebuild"
 # if so, rebuild all the containers
