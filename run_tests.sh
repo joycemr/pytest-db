@@ -39,9 +39,19 @@ rebuild_test_container () {
     docker build -t $TEST_IMAGE -f $TEST_IMAGE_DOCKERFILE .
 }
 
+# perl workaround since timeout does not come on a mac
+# TODO get this to work with the until command
+function timeout() {
+    perl -e 'alarm shift; exec @ARGV' "$@";
+}
+
+check_db_connection () {
+    until docker exec $DB_CONTAINER pg_isready ; do sleep 3 ; done
+}
+
 wait_on_db_connection () {
     # TODO need a timeout here, but the standard one does not work on a mac
-    until docker exec $DB_CONTAINER pg_isready ; do sleep 3 ; done
+    until check_db_connection ; do sleep 3 ; done
 }
 
 # rebuild the database SQL DDL file
