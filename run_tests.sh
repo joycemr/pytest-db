@@ -4,7 +4,7 @@
 OUTPUT=$(docker image ls -q pytest_sql_test)
 if [ ! $OUTPUT ]
     then
-    docker build -t pytest_sql_test .
+    docker build -t pytest_sql_test -f containers/pytest/Dockerfile .
 fi
 
 # check for any parameters to the pytest_sql_test command
