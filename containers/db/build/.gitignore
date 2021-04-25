@@ -1,5 +1,10 @@
 # Ignore everything in this directory
 # it is just for rolled up build artifacts
-*
+# *
 # Except this file
-!.gitignore
+# !.gitignore
+
+# normally you would have a .gitignore file like above, with lines 3 and 5 above not
+# commented out to not save build artifacts to the repo,
+# but this template uses a simplified SQL DDL file
+# that is coded directly here to build the test database.
