@@ -30,6 +30,7 @@ rebuild_test_container () {
 }
 
 wait_on_db_connection () {
+    # TODO need a timeout here, but the standard one does not work on a mac
     until docker exec $DB_CONTAINER pg_isready ; do sleep 3 ; done
 }
 
