@@ -1,4 +1,4 @@
-from db import cur
+from resources.db import cur
 from pytest import fixture
 
 # Test data setup fixtures

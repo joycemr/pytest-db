@@ -1,5 +1,5 @@
-from convert_var import convert_var
-from db import cur
+from resources.convert_var import convert_var
+from resources.db import cur
 
 def func(function_name, *args):
     var_list = [convert_var(var) for var in args]
