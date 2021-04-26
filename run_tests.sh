@@ -44,8 +44,6 @@ check_db_connection () {
 }
 
 wait_on_db_connection () {
-    # TODO need a timeout here, but the standard one does not work on a mac
-    # until check_db_connection ; do sleep 3 ;
     for i in {1..10}; do
         check_db_connection
         if [ $? -eq 0 ]
