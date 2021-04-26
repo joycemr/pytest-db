@@ -21,7 +21,7 @@ build_database_sql () {
     cat $DB_FUNCTION_DIR/*.sql >> $DB_BUILD_DIR/complete.sql
 }
 
-rebuild_db_container () {
+rebuild_db_image () {
     OUTPUT=$(docker image ls -q $DB_IMAGE)
     if [ $OUTPUT ]
         then
@@ -30,7 +30,7 @@ rebuild_db_container () {
     docker build -t $DB_IMAGE -f $DB_IMAGE_DOCKERFILE .
 }
 
-rebuild_test_container () {
+rebuild_test_image () {
     OUTPUT=$(docker image ls -q $TEST_IMAGE)
     if [ $OUTPUT ]
         then
@@ -65,18 +65,18 @@ if [ "$1" == "rebuild" ]
     then
     shift # throw away 1st parameter any others will be passed to pytest
     echo "Rebuilding the container images..."
-    rebuild_db_container
-    rebuild_test_container
+    rebuild_db_image
+    rebuild_test_image
 else
     OUTPUT=$(docker image ls -q $DB_IMAGE)
     if [ ! $OUTPUT ]
         then
-        rebuild_db_container
+        rebuild_db_image
     fi
     OUTPUT=$(docker image ls -q $TEST_IMAGE)
     if [ ! $OUTPUT ]
         then
-        rebuild_test_container
+        rebuild_test_image
     fi
 fi
 
