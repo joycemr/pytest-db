@@ -1,6 +1,5 @@
 import os, sys
 import psycopg2
-from psycopg2.extras import NamedTupleCursor
 
 class NoDatabaseUrlSet(Exception):
     pass
@@ -16,4 +15,3 @@ if DATABASE_URL == None:
     sys.exit(0)
 
 conn = psycopg2.connect(DATABASE_URL)
-cur = conn.cursor(cursor_factory=NamedTupleCursor)

@@ -1,4 +1,4 @@
-from resources.db import cur
+from resources.db import conn
 from pytest import fixture
 
 # Test data setup fixtures
@@ -33,9 +33,10 @@ def books_vonnegut():
 @fixture(scope="function")
 def setup_authors(authors):
     for author in authors:
-        cur.execute("select nextval('author_seq')")
-        author_key = cur.fetchone()
-        cur.execute('insert into author values(%s, %s, %s, %s)', author_key + author)
+        with conn.cursor() as cur:
+            cur.execute("select nextval('author_seq')")
+            author_key = cur.fetchone()
+            cur.execute('insert into author values(%s, %s, %s, %s)', author_key + author)
     yield
 
 
