@@ -9,19 +9,19 @@ from psycopg2.extras import NamedTupleCursor
 @mark.tables
 class TestAuthors:
 
-    @mark.parametrize('l_name, expected_f_name', [
-        ('Vonnegut', 'Kurt'),
-        ('Twain', 'Mark')
+    @mark.parametrize('expected', [
+        {'f_name': 'Kurt', 'l_name': 'Vonnegut', 'email': 'KVonnegut@gmail.com'},
+        {'f_name': 'Mark', 'l_name': 'Twain', 'email': 'MTwain@gmail.com'}
     ])
-    def test_Authors(self, setup_authors, l_name, expected_f_name):
+    def test_Authors(self, setup_authors, expected):
         with conn.cursor(cursor_factory=NamedTupleCursor) as cur:
             sql = 'select * from author where l_name = %s'
-            cur.execute(sql, (l_name,))
+            cur.execute(sql, (expected['l_name'],))
             rs = cur.fetchall()
             actual = get_first_row(rs)
-        assert actual.f_name == expected_f_name
-        # assert actual.l_name == 'Vonnegut'
-        # assert actual.email == 'KVonnegut@gmail.com'
+        assert actual.f_name == expected['f_name']
+        assert actual.l_name == expected['l_name']
+        assert actual.email == expected['email']
 
     def test_Vonnegut(self, setup_authors):
         rs = select('author', '*', condition = "l_name = 'Vonnegut'")
