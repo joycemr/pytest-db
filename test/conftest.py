@@ -4,11 +4,15 @@ from pytest import fixture
 # Test data setup fixtures
 @fixture(scope='session')
 def authors():
-    authors = (
-        ('Kurt', 'Vonnegut', 'KVonnegut@gmail.com'),
-        ('Mark', 'Twain', 'MTwain@gmail.com')
-    )
+    authors = [
+        {'f_name': 'Kurt', 'l_name': 'Vonnegut', 'email': 'KVonnegut@gmail.com'},
+        {'f_name': 'Mark', 'l_name': 'Twain', 'email': 'MTwain@gmail.com'}
+    ]
     return authors
+
+@fixture(scope='session')
+def authors_tuples(authors):
+    return [(d['f_name'], d['l_name'], d['email']) for d in authors]
 
 @fixture(scope='session')
 def books_twain():
@@ -31,8 +35,8 @@ def books_vonnegut():
     return books_vonnegut
 
 @fixture(scope="function")
-def setup_authors(authors):
-    for author in authors:
+def setup_authors(authors_tuples):
+    for author in authors_tuples:
         with conn.cursor() as cur:
             cur.execute("select nextval('author_seq')")
             author_key = cur.fetchone()
