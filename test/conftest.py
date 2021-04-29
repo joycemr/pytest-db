@@ -12,10 +12,6 @@ def authors():
     return test_data.authors
 
 @pytest.fixture(scope='session')
-def authors_tuples(authors):
-    return [(d['f_name'], d['l_name'], d['email']) for d in authors]
-
-@pytest.fixture(scope='session')
 def books_twain():
     books_twain = (
         ('The Adventures Of Tom Sawyer', '1876'),
@@ -36,12 +32,11 @@ def books_vonnegut():
     return books_vonnegut
 
 @pytest.fixture(scope="function")
-def setup_authors(authors_tuples):
-    for author in authors_tuples:
+def setup_authors(authors):
+    for author in authors:
         with conn.cursor() as cur:
             cur.execute("select nextval('author_seq')")
-            author_key = cur.fetchone()
-            cur.execute('insert into author values(%s, %s, %s, %s)', author_key + author)
+            author['id'] = cur.fetchone()
+            cur.execute('insert into author values(%(id)s, %(f_name)s, %(l_name)s, %(email)s)', author)
     yield
-
 
