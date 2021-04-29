@@ -1,20 +1,21 @@
+import pytest
 from resources.db import conn
-from pytest import fixture
+import resources.test_data as test_data
 
-# Test data setup fixtures
-@fixture(scope='session')
+# make the connection and test data available globally without an extra import
+pytest.conn = conn
+pytest.test_data = test_data
+
+# Test data setup pytest.fixtures
+@pytest.fixture(scope='session')
 def authors():
-    authors = [
-        {'f_name': 'Kurt', 'l_name': 'Vonnegut', 'email': 'KVonnegut@gmail.com'},
-        {'f_name': 'Mark', 'l_name': 'Twain', 'email': 'MTwain@gmail.com'}
-    ]
-    return authors
+    return test_data.authors
 
-@fixture(scope='session')
+@pytest.fixture(scope='session')
 def authors_tuples(authors):
     return [(d['f_name'], d['l_name'], d['email']) for d in authors]
 
-@fixture(scope='session')
+@pytest.fixture(scope='session')
 def books_twain():
     books_twain = (
         ('The Adventures Of Tom Sawyer', '1876'),
@@ -24,7 +25,7 @@ def books_twain():
     )
     return books_twain
 
-@fixture(scope='session')
+@pytest.fixture(scope='session')
 def books_vonnegut():
     books_vonnegut = (
         ('Slaughterhouse-Five', '1969'),
@@ -34,7 +35,7 @@ def books_vonnegut():
     )
     return books_vonnegut
 
-@fixture(scope="function")
+@pytest.fixture(scope="function")
 def setup_authors(authors_tuples):
     for author in authors_tuples:
         with conn.cursor() as cur:
