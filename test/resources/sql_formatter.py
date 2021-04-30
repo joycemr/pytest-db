@@ -1,11 +1,3 @@
-
-def get_first_row(rs):
-    if type(rs) != list:
-        return rs
-    else:
-        if len(rs) > 0:
-            return rs[0]
-
 def get_field_list(data_dict):
     return ', '.join(['{}']*len(data_dict)).format(*data_dict.keys())
 
@@ -19,3 +11,14 @@ def insert(table_name, data_dict):
     sql.append(' RETURNING *')
     return ''.join(sql)
 
+def convert_var(var):
+    if var is None:
+        function_variable = 'null'
+    elif isinstance(var,str):
+        function_variable = "'{}'".format(var)
+    elif isinstance(var,int):
+        function_variable = "{}".format(var)
+    else:
+        function_variable = var
+
+    return function_variable

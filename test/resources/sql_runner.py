@@ -1,5 +1,4 @@
 import pytest
-from resources.convert_var import convert_var
 import resources.sql_formatter as sql_formatter
 from psycopg2.extras import NamedTupleCursor
 import sys
@@ -30,11 +29,18 @@ def delete(table_name, condition = 'true'):
     return run_sql(sql)
 
 def function(function_name, *args):
-    var_list = [convert_var(var) for var in args]
+    var_list = [sql_formatter.convert_var(var) for var in args]
     sql = "SELECT " + function_name + "(" + ", ".join(["{}"]*len(var_list)).format(*var_list) + ")"
     return run_sql(sql)
 
 def function_row_type(function_name, dict):
-    var_list = [convert_var(value) for key, value in dict.items()]
+    var_list = [sql_formatter.convert_var(value) for key, value in dict.items()]
     sql = "SELECT " + function_name + "((" + ", ".join(["{}"]*len(var_list)).format(*var_list) + "))"
     return run_sql(sql)
+
+def get_first_row(rs):
+    if type(rs) != list:
+        return rs
+    else:
+        if len(rs) > 0:
+            return rs[0]
