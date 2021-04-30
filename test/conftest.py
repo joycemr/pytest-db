@@ -40,12 +40,12 @@ def setup_authors(authors):
 
 @pytest.fixture(scope="function")
 def setup_books(books):
-    for book in books:
+    for book_data in books:
         with conn.cursor() as cur:
             cur.execute("select nextval('book_seq')")
-            book['id'] = cur.fetchone()[0]
-            rs = sql_runner.select('author', 'id', condition = "l_name = '" + book['l_name'] + "'")
-            book['author_id'] = rs[0]
-            book_params = {'id': book['id'], 'author_id': book['author_id'], 'title': book['title'], 'pub_year': book['pub_year']}
-            sql_runner.insert('book', book_params)
+            book_data['id'] = cur.fetchone()[0]
+            rs = sql_runner.select('author', 'id', condition = "l_name = '" + book_data['l_name'] + "'")
+            book_data['author_id'] = rs[0]
+            new_book = {'id': book_data['id'], 'author_id': book_data['author_id'], 'title': book_data['title'], 'pub_year': book_data['pub_year']}
+            sql_runner.insert('book', new_book)
     yield
