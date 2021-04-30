@@ -55,15 +55,3 @@ def setup_authors(authors):
             # cur.execute('insert into author values(%(id)s, %(f_name)s, %(l_name)s, %(email)s)', author)
     yield
 
-@pytest.fixture(scope='function')
-def table():
-    yield  'author'
-
-
-@pytest.fixture(scope='function')
-def data_dict():
-    yield  {'f_name': 'Kurt', 'l_name': 'Vonnegut', 'email': 'KVonnegut@gmail.com'}
-
-@pytest.fixture(scope='function')
-def expected_insert_sql():
-    yield  'INSERT INTO author(f_name, l_name, email) VALUES (%(f_name)s, %(l_name)s, %(email)s) RETURNING *'
