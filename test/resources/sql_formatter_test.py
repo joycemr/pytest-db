@@ -1,5 +1,6 @@
 import pytest
 import resources.sql_formatter as sql_formatter
+import resources.sql_runner as sql_runner
 
 @pytest.fixture(scope='function')
 def table():
@@ -32,3 +33,4 @@ class TestSqlFormatter:
 
     def test_insert(self, table, data_dict, expected_insert_sql):
         assert expected_insert_sql == sql_formatter.insert(table, data_dict)
+

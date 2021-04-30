@@ -26,24 +26,8 @@ def authors():
     return test_data.authors
 
 @pytest.fixture(scope='session')
-def books_twain():
-    books_twain = (
-        ('The Adventures Of Tom Sawyer', '1876'),
-        ('The Adventures of Huckleberry Finn', '1885'),
-        ("A Connecticut Yankee in King Arthur's Court", '1889'),
-        ('Letters from the Earth', '1962'),
-    )
-    return books_twain
-
-@pytest.fixture(scope='session')
-def books_vonnegut():
-    books_vonnegut = (
-        ('Slaughterhouse-Five', '1969'),
-        ('The Sirens of Titan', '1959'),
-        ("Cat's Cradle", '1963'),
-        ('Player Piano', '1952'),
-    )
-    return books_vonnegut
+def books():
+    return test_data.books
 
 @pytest.fixture(scope="function")
 def setup_authors(authors):
@@ -52,6 +36,16 @@ def setup_authors(authors):
             cur.execute("select nextval('author_seq')")
             author['id'] = cur.fetchone()[0]
             sql_runner.insert('author', author)
-            # cur.execute('insert into author values(%(id)s, %(f_name)s, %(l_name)s, %(email)s)', author)
     yield
 
+@pytest.fixture(scope="function")
+def setup_books(books):
+    for book in books:
+        with conn.cursor() as cur:
+            cur.execute("select nextval('book_seq')")
+            book['id'] = cur.fetchone()[0]
+            rs = sql_runner.select('author', 'id', condition = "l_name = '" + book['l_name'] + "'")
+            book['author_id'] = rs[0]
+            book_params = {'id': book['id'], 'author_id': book['author_id'], 'title': book['title'], 'pub_year': book['pub_year']}
+            sql_runner.insert('book', book_params)
+    yield
