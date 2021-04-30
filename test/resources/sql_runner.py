@@ -8,12 +8,8 @@ def run_sql(sql, params=False):
     with pytest.conn.cursor(cursor_factory=NamedTupleCursor) as cur:
         try:
             if params:
-                print('*** run_sql ***')
-                print(cur.mogrify(sql, params))
                 cur.execute(sql, params)
             else:
-                print('*** run_sql ***')
-                print(sql)
                 cur.execute(sql)
             return cur.fetchall()
         except:
