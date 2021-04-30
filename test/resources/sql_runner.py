@@ -5,18 +5,13 @@ from psycopg2.extras import NamedTupleCursor
 import sys
 
 
-def run_sql(sql):
+def run_sql(sql, params=False):
     with pytest.conn.cursor(cursor_factory=NamedTupleCursor) as cur:
         try:
-            cur.execute(sql)
-            return cur.fetchall()
-        except:
-            pytest.conn.rollback()
-
-def run_sql_with_params(sql, params):
-    with pytest.conn.cursor(cursor_factory=NamedTupleCursor) as cur:
-        try:
-            cur.execute(sql, params)
+            if params:
+                cur.execute(sql, params)
+            else:
+                cur.execute(sql)
             return cur.fetchall()
         except:
             pytest.conn.rollback()
@@ -28,7 +23,7 @@ def select(table_name, *field_list, condition = 'true'):
 
 def insert(table_name, data_dict):
     sql = "INSERT INTO " + table_name + "(" + get_field_list(data_dict) + ") VALUES (" + get_param_placeholders(data_dict) + ") RETURNING *"
-    return run_sql_with_params(sql, data_dict)
+    return run_sql(sql, data_dict)
 
 def delete(table_name, condition = 'true'):
     sql = "DELETE FROM {} WHERE {}".format(table_name, condition)
