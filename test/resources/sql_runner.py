@@ -1,6 +1,6 @@
 import pytest
 from resources.convert_var import convert_var
-from resources.sql_formatter import get_field_list, get_param_placeholders
+import resources.sql_formatter as sql_formatter
 from psycopg2.extras import NamedTupleCursor
 import sys
 
@@ -22,7 +22,7 @@ def select(table_name, *field_list, condition = 'true'):
     return run_sql(sql)
 
 def insert(table_name, data_dict):
-    sql = "INSERT INTO " + table_name + "(" + get_field_list(data_dict) + ") VALUES (" + get_param_placeholders(data_dict) + ") RETURNING *"
+    sql = sql_formatter.insert(table_name, data_dict)
     return run_sql(sql, data_dict)
 
 def delete(table_name, condition = 'true'):
