@@ -24,4 +24,4 @@ ENV SQL_UNIT_TEST_TEMPLATE_DB_URL=postgresql://postgres:postgres@host.docker.int
 
 WORKDIR /test
 
-CMD ["pytest", "-v"]
+CMD ["pytest"]
