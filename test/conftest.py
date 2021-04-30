@@ -3,21 +3,22 @@ from psycopg2.extras import NamedTupleCursor
 from resources.db import conn
 import resources.test_data as test_data
 import resources.sql_runner as sql_runner
-import resources.result_formatter as result_formatter
+import resources.sql_formatter as sql_formatter
 
 
 # make the connection and test data available globally without an extra import
+# DB stuff
 pytest.conn = conn
-# TODO this returns a closed cursor
-pytest.cur = conn.cursor(cursor_factory=NamedTupleCursor)
-pytest.test_data = test_data
+# pytest.cur = conn.cursor(cursor_factory=NamedTupleCursor)
+# common sql runners
 pytest.sql_runner = sql_runner
-pytest.result_formatter = result_formatter
+pytest.sql_formatter = sql_formatter
+# Test data
+pytest.test_data = test_data
 
-@pytest.fixture(scope='function')
-def cur():
-    cur = conn.cursor(cursor_factory=NamedTupleCursor)
-    yield cur
+@pytest.fixture(scope='session')
+def no_data_msg():
+    return 'No data returned to test'
 
 # Test data setup pytest.fixtures
 @pytest.fixture(scope='session')
