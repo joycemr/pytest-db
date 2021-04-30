@@ -5,11 +5,16 @@ import pytest
 @pytest.mark.tables
 class TestBooks:
 
-    def test_Vonnegut(self, setup_authors, setup_books, no_data_msg):
-        rs = pytest.sql_runner.select('book', '*', condition = "title = 'Slaughterhouse-Five'")
+    @pytest.mark.parametrize('expected', pytest.test_data.books)
+    def test_books(self, setup_authors, setup_books, no_data_msg, expected):
+        # TODO I have to deal with the strings that have single quotes here
+        # this is kludgy
+        title_condition = "title = '" + expected['title'].replace("'","''") + "'"
+        print(title_condition)
+        rs = pytest.sql_runner.select('book', '*', condition = title_condition)
         try:
             actual = pytest.sql_runner.get_first_row(rs)
-            assert actual.title == 'Slaughterhouse-Five'
-            assert actual.pub_year == '1969'
+            assert actual.title == expected['title']
+            assert actual.pub_year == expected['pub_year']
         except:
             assert False, no_data_msg
