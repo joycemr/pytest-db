@@ -50,7 +50,8 @@ def setup_authors(authors):
     for author in authors:
         with conn.cursor() as cur:
             cur.execute("select nextval('author_seq')")
-            author['id'] = cur.fetchone()
-            cur.execute('insert into author values(%(id)s, %(f_name)s, %(l_name)s, %(email)s)', author)
+            author['id'] = cur.fetchone()[0]
+            sql_runner.insert('author', author)
+            # cur.execute('insert into author values(%(id)s, %(f_name)s, %(l_name)s, %(email)s)', author)
     yield
 
