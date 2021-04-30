@@ -44,3 +44,10 @@ def get_first_row(rs):
     else:
         if len(rs) > 0:
             return rs[0]
+
+def print_select(sql):
+    with pytest.conn.cursor() as cur:
+        cur.execute(sql)
+        rs = cur.fetchall()
+        for row in rs:
+            print(row)
