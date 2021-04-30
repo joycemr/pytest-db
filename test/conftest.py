@@ -49,5 +49,4 @@ def setup_books(books):
                 cur.execute("select nextval('book_seq')")
                 book['id'] = cur.fetchone()[0]
                 sql_runner.insert('book', book)
-    # sql_runner.print_select('select * from book')
     yield
