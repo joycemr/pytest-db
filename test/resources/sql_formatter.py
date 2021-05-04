@@ -4,6 +4,13 @@ def get_field_list(data_dict):
 def get_param_placeholders(data_dict):
     return ', '.join(['%({})s']*len(data_dict)).format(*data_dict)
 
+def select(table_name, *field_list, condition = 'true'):
+    sql = ["SELECT "]
+    sql.append(", ".join(["{}"]*len(field_list)).format(*field_list))
+    sql.append(" FROM {} ".format(table_name))
+    sql.append(" WHERE {}".format(condition))
+    return ''.join(sql)
+
 def insert(table_name, data_dict):
     sql = ['INSERT INTO ' + table_name]
     sql.append('(' + get_field_list(data_dict) + ')')

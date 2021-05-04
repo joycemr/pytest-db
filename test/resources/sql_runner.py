@@ -17,7 +17,7 @@ def run_sql(sql, params=False):
 
 
 def select(table_name, *field_list, condition = 'true'):
-    sql = "SELECT " + ", ".join(["{}"]*len(field_list)).format(*field_list)+" FROM {} WHERE {}".format(table_name, condition)
+    sql = sql_formatter.select(table_name, *field_list, condition = condition)
     return run_sql(sql)
 
 def insert(table_name, data_dict):
