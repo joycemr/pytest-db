@@ -33,8 +33,7 @@ def function(function_name, *args):
     return run_sql(sql)
 
 def function_row_type(function_name, dict):
-    var_list = [sql_formatter.convert_var(value) for key, value in dict.items()]
-    sql = "SELECT " + function_name + "((" + ", ".join(["{}"]*len(var_list)).format(*var_list) + "))"
+    sql = sql_formatter.function_row_type(function_name, dict)
     return run_sql(sql)
 
 def get_first_row(rs):

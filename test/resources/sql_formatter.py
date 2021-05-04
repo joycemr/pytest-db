@@ -33,6 +33,15 @@ def function(function_name, *args):
     sql.append(')')
     return ''.join(sql)
 
+def function_row_type(function_name, dict):
+    var_list = [sql_formatter.convert_var(value) for key, value in dict.items()]
+    sql = ['SELECT ' + function_name]
+    sql.append('((')
+    sql.append(', '.join(['{}']*len(var_list)).format(*var_list))
+    sql.append('))')
+    return ''.join(sql)
+
+
 def convert_var(var):
     if var is None:
         function_variable = 'null'
