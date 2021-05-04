@@ -25,7 +25,7 @@ def insert(table_name, data_dict):
     return run_sql(sql, data_dict)
 
 def delete(table_name, condition = 'true'):
-    sql = "DELETE FROM {} WHERE {}".format(table_name, condition)
+    sql = sql_formatter.delete(table_name, condition = condition)
     return run_sql(sql)
 
 def function(function_name, *args):

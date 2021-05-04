@@ -18,6 +18,12 @@ def insert(table_name, data_dict):
     sql.append(' RETURNING *')
     return ''.join(sql)
 
+def delete(table_name, condition = 'true'):
+    sql = ['DELETE FROM {} '.format(table_name)]
+    sql.append('WHERE {}'.format(condition))
+    return ''.join(sql)
+
+
 def function(function_name, *args):
     var_list = [convert_var(var) for var in args]
     print(var_list)
