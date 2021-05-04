@@ -29,8 +29,8 @@ def delete(table_name, condition = 'true'):
     return run_sql(sql)
 
 def function(function_name, *args):
-    var_list = [sql_formatter.convert_var(var) for var in args]
-    sql = "SELECT " + function_name + "(" + ", ".join(["{}"]*len(var_list)).format(*var_list) + ")"
+    sql = sql_formatter.function(function_name, *args)
+    print(sql)
     return run_sql(sql)
 
 def function_row_type(function_name, dict):

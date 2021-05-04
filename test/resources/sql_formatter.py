@@ -18,6 +18,16 @@ def insert(table_name, data_dict):
     sql.append(' RETURNING *')
     return ''.join(sql)
 
+def function(function_name, *args):
+    var_list = [convert_var(var) for var in args]
+    print(var_list)
+    sql = ['SELECT ']
+    sql.append(function_name)
+    sql.append('(')
+    sql.append(', '.join(['{}']*len(var_list)).format(*var_list))
+    sql.append(')')
+    return ''.join(sql)
+
 def convert_var(var):
     if var is None:
         function_variable = 'null'
