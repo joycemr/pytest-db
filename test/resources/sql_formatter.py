@@ -6,7 +6,7 @@ def get_param_placeholders(data_dict):
 
 def select(table_name, *field_list, condition = 'true'):
     sql = ["SELECT "]
-    sql.append(", ".join(["{}"]*len(field_list)).format(*field_list))
+    sql.append(", ".join(['{}']*len(field_list)).format(*field_list))
     sql.append(" FROM {} ".format(table_name))
     sql.append(" WHERE {}".format(condition))
     return ''.join(sql)
@@ -26,7 +26,6 @@ def delete(table_name, condition = 'true'):
 
 def function(function_name, *args):
     var_list = [convert_var(var) for var in args]
-    print(var_list)
     sql = ['SELECT ']
     sql.append(function_name)
     sql.append('(')

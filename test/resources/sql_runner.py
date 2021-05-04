@@ -30,7 +30,6 @@ def delete(table_name, condition = 'true'):
 
 def function(function_name, *args):
     sql = sql_formatter.function(function_name, *args)
-    print(sql)
     return run_sql(sql)
 
 def function_row_type(function_name, dict):
