@@ -22,6 +22,10 @@ def expected_param_placeholders():
 def expected_insert_sql():
     return 'INSERT INTO author(id, f_name, l_name, email) VALUES (%(id)s, %(f_name)s, %(l_name)s, %(email)s) RETURNING *'
 
+@pytest.fixture
+def expected_function_call():
+    return "SELECT get_author_id(1, 'Mark Twain')"
+
 @pytest.mark.resources
 class TestSqlFormatter:
 
@@ -33,4 +37,7 @@ class TestSqlFormatter:
 
     def test_insert(self, table, data_dict, expected_insert_sql):
         assert expected_insert_sql == sql_formatter.insert(table, data_dict)
+
+    def test_func(self, expected_function_call):
+        assert expected_function_call == sql_formatter.function('get_author_id', 1, 'Mark Twain')
 
