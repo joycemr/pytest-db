@@ -26,6 +26,10 @@ def expected_insert_sql():
 def expected_function_call():
     return "SELECT get_author_id(1, 'Mark Twain')"
 
+@pytest.fixture
+def expected_function_call_row_type():
+    return "SELECT get_author_id((1, 'Mark Twain'))"
+
 @pytest.mark.resources
 class TestSqlFormatter:
 
@@ -38,6 +42,9 @@ class TestSqlFormatter:
     def test_insert(self, table, data_dict, expected_insert_sql):
         assert expected_insert_sql == sql_formatter.insert(table, data_dict)
 
-    def test_func(self, expected_function_call):
+    def test_function(self, expected_function_call):
         assert expected_function_call == sql_formatter.function('get_author_id', 1, 'Mark Twain')
+
+    def test_function_row_type_call(self, expected_function_call_row_type):
+        assert expected_function_call_row_type == sql_formatter.function('get_author_id', 1, 'Mark Twain', row_type = True)
 

@@ -23,24 +23,19 @@ def delete(table_name, condition = 'true'):
     sql.append('WHERE {}'.format(condition))
     return ''.join(sql)
 
-
-def function(function_name, *args):
+def function(function_name, *args, row_type = False):
     var_list = [convert_var(var) for var in args]
     sql = ['SELECT ']
     sql.append(function_name)
     sql.append('(')
-    sql.append(', '.join(['{}']*len(var_list)).format(*var_list))
+    args = []
+    args.append(', '.join(['{}']*len(var_list)).format(*var_list))
+    if row_type:
+        args.insert(0, '(')
+        args.append(')')
+    sql.append(''.join(args))
     sql.append(')')
     return ''.join(sql)
-
-def function_row_type(function_name, dict):
-    var_list = [convert_var(value) for key, value in dict.items()]
-    sql = ['SELECT ' + function_name]
-    sql.append('((')
-    sql.append(', '.join(['{}']*len(var_list)).format(*var_list))
-    sql.append('))')
-    return ''.join(sql)
-
 
 def convert_var(var):
     if var is None:

@@ -28,12 +28,8 @@ def delete(table_name, condition = 'true'):
     sql = sql_formatter.delete(table_name, condition = condition)
     return run_sql(sql)
 
-def function(function_name, *args):
-    sql = sql_formatter.function(function_name, *args)
-    return run_sql(sql)
-
-def function_row_type(function_name, dict):
-    sql = sql_formatter.function_row_type(function_name, dict)
+def function(function_name, *args, row_type = False):
+    sql = sql_formatter.function(function_name, *args, row_type = row_type)
     return run_sql(sql)
 
 def get_first_row(rs):
