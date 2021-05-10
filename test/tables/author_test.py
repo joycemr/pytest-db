@@ -38,3 +38,12 @@ class TestAuthors:
         except:
             assert False, no_data_msg
 
+    # example of a test that is not ready for some reason
+    @pytest.mark.skip(reason='Code not ready yet')
+    def test_that_is_not_ready(self):
+        assert False
+
+    # example of a test with an expected failure
+    @pytest.mark.xfail(reason='deprecated feature')
+    def test_expected_to_fail(self):
+        assert False
