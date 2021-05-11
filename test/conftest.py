@@ -1,7 +1,7 @@
 import pytest
 from psycopg2.extras import NamedTupleCursor
 from resources.db import conn
-import resources.test_data as test_data
+from data.TestData import TestData
 import resources.sql_runner as sql_runner
 import resources.sql_formatter as sql_formatter
 
@@ -14,7 +14,7 @@ pytest.conn = conn
 pytest.sql_runner = sql_runner
 pytest.sql_formatter = sql_formatter
 # Test data
-pytest.test_data = test_data
+pytest.TestData = TestData
 
 @pytest.fixture(scope='session')
 def no_data_msg():
@@ -23,11 +23,11 @@ def no_data_msg():
 # Test data setup pytest.fixtures
 @pytest.fixture(scope='session')
 def authors():
-    return test_data.authors
+    return TestData.authors
 
 @pytest.fixture(scope='session')
-def books():
-    return test_data.books
+def authors_and_books():
+    return TestData.authors_and_books
 
 @pytest.fixture(scope="function")
 def setup_authors(authors):
@@ -39,8 +39,8 @@ def setup_authors(authors):
     yield
 
 @pytest.fixture(scope="function")
-def setup_books(books):
-    for catalog in books:
+def setup_books(authors_and_books):
+    for catalog in authors_and_books:
         rs = sql_runner.select('author', 'id', condition = "l_name = '" + catalog['l_name'] + "'")
         author_id = rs[0]
         for book in catalog['titles']:

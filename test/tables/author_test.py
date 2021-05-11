@@ -26,7 +26,7 @@ class TestAuthors:
             assert False, no_data_msg
 
     # this parametrized test does the same thing as both tests above
-    @pytest.mark.parametrize('expected', pytest.test_data.authors)
+    @pytest.mark.parametrize('expected', pytest.TestData.authors)
     def test_Authors(self, setup_authors, expected):
         where_clause = "l_name = '" + expected['l_name'] + "'"
         rs = pytest.sql_runner.select('author', '*', condition = where_clause)

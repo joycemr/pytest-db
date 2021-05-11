@@ -5,11 +5,11 @@ import pytest
 @pytest.mark.tables
 class TestBooks:
 
-    @pytest.mark.parametrize('expected', pytest.test_data.book_params)
+    @pytest.mark.parametrize('expected', pytest.TestData.books)
     def test_books(self, setup_authors, setup_books, no_data_msg, expected):
         # TODO I have to deal with the strings that have single quotes here
         # this is kludgy
-        print(expected['title'].replace("'","''"))
+        # print(expected['title'].replace("'","''"))
         title_condition = "title = '" + expected['title'].replace("'","''") + "'"
         rs = pytest.sql_runner.select('book', '*', condition = title_condition)
         try:
