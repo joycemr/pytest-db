@@ -12,7 +12,7 @@ def expected():
 # test a sql function
 @pytest.mark.functions
 @pytest.mark.authors
-def test_get_author_id_func(setup_authors, expected, no_data_msg):
+def test_get_author_id_func(setup_data, expected, no_data_msg):
     results = pytest.sql_runner.function(test_func, 'Mark Twain')
     try:
         actual_author_id = pytest.sql_runner.get_first_row(results).get_author_id

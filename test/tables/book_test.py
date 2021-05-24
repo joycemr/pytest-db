@@ -6,7 +6,7 @@ import pytest
 class TestBooks:
 
     @pytest.mark.parametrize('expected', pytest.books)
-    def test_books(self, setup_authors, setup_books, no_data_msg, expected):
+    def test_books(self, setup_data, no_data_msg, expected):
         # TODO I have to deal with the strings that have single quotes here
         # this is kludgy
         # print(expected['title'].replace("'","''"))

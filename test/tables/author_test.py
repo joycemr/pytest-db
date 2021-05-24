@@ -7,7 +7,7 @@ class TestAuthors:
 
     # this test and the next look for hardcoded data
     # it works, but it's brittle and not the best practice
-    def test_Vonnegut(self, setup_authors, no_data_msg):
+    def test_Vonnegut(self, setup_data, no_data_msg):
         rs = pytest.sql_runner.select('author', '*', condition = "l_name = 'Vonnegut'")
         try:
             actual = pytest.sql_runner.get_first_row(rs)
@@ -17,7 +17,7 @@ class TestAuthors:
         except:
             assert False, no_data_msg
 
-    def test_Twain(self, setup_authors, no_data_msg):
+    def test_Twain(self, setup_data, no_data_msg):
         rs = pytest.sql_runner.select('author', '*', condition = "l_name = 'Twain'")
         try:
             actual = pytest.sql_runner.get_first_row(rs)
@@ -30,7 +30,7 @@ class TestAuthors:
     # this parametrized test does the same thing as both tests above
     # and uses the same data in the author.csv file
     @pytest.mark.parametrize('expected', pytest.authors)
-    def test_Authors(self, setup_authors, expected, no_data_msg):
+    def test_Authors(self, setup_data, expected, no_data_msg):
         where_clause = "l_name = '" + expected['l_name'] + "'"
         rs = pytest.sql_runner.select('author', '*', condition = where_clause)
         try:

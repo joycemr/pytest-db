@@ -23,11 +23,12 @@ pytest.sql_formatter = sql_formatter
 pytest.authors = csv.DictReader(open(author_csv));
 pytest.books = csv.DictReader(open(book_csv))
 
+# just a little common error message
 @pytest.fixture(scope='session')
 def no_data_msg():
     return 'No data returned to test'
 
-# Test data setup pytest.fixtures
+# Test data fixtures
 @pytest.fixture(scope='session')
 def authors():
     return csv.DictReader(open(author_csv))
@@ -36,15 +37,13 @@ def authors():
 def books():
     return csv.DictReader(open(book_csv))
 
+# This fixture sets up all the test data each time a
+# function is ran. Since psychopg2 runs on implicit commit
+# there is no need to clean up after each run
 @pytest.fixture(scope="function")
-def setup_authors(authors):
+def setup_data(authors, books):
     for author in authors:
-        with conn.cursor() as cur:
-            sql_runner.insert('author', author)
-    yield
-
-@pytest.fixture(scope="function")
-def setup_books(books):
+        sql_runner.insert('author', author)
     for book in books:
         sql_runner.insert('book', book)
-    yield
+
