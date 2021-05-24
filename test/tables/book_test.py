@@ -5,7 +5,7 @@ import pytest
 @pytest.mark.tables
 class TestBooks:
 
-    @pytest.mark.parametrize('expected', pytest.TestData.books)
+    @pytest.mark.parametrize('expected', pytest.books)
     def test_books(self, setup_authors, setup_books, no_data_msg, expected):
         # TODO I have to deal with the strings that have single quotes here
         # this is kludgy
