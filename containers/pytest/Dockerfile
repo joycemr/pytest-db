@@ -7,9 +7,6 @@ WORKDIR /src
 # copy requirements file
 COPY ../../requirements.txt /src/requirements.txt
 
-# copy the pytest.ini file to the working dir
-COPY pytest.ini /pytest/pytest.ini
-
 # install dependencies
 RUN set -eux \
     && apk add --no-cache --virtual .build-deps build-base \
