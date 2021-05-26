@@ -13,7 +13,7 @@ DB_IMAGE_DOCKERFILE="containers/db/Dockerfile"
 # pytest image vars
 TEST_IMAGE="pytest_sql_test"
 TEST_IMAGE_DOCKERFILE="containers/pytest/Dockerfile"
-TEST_MOUNT="type=bind,source="$(pwd)"/test,target=/test"
+TEST_MOUNT="type=bind,source="$(pwd)"/test,target=/pytest/test"
 
 # functions
 build_database_sql () {

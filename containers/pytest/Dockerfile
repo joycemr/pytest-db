@@ -5,7 +5,10 @@ FROM python:3.8.1-alpine
 WORKDIR /src
 
 # copy requirements file
-COPY ../test/requirements.txt /src/requirements.txt
+COPY ../../requirements.txt /src/requirements.txt
+
+# copy the pytest.ini file to the working dir
+COPY pytest.ini /pytest/pytest.ini
 
 # install dependencies
 RUN set -eux \
@@ -22,6 +25,6 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTEST_ADDOPTS="--color=yes"
 ENV SQL_UNIT_TEST_TEMPLATE_DB_URL=postgresql://postgres:postgres@host.docker.internal:5432/postgres
 
-WORKDIR /test
+WORKDIR /pytest
 
 CMD ["pytest"]
