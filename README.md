@@ -17,6 +17,6 @@
   - start the database container manually
   - in psql, from the parent directory run
     ```
-    \copy author from test/data/author.csv with CSV HEADER;
-    \copy book from test/data/book.csv with CSV HEADER;
+    \copy author FROM test/data/author.csv WITH CSV HEADER;
+    \copy book FROM test/data/book.csv WITH CSV HEADER;
     ```
